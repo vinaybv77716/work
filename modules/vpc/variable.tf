@@ -1,14 +1,14 @@
-variable "vpc-cidr-useast1" {
+variable "vpc-cidr-useast2" {
   type        = string
   description = "description"
 }
 
-variable "subnet-cidr-useast1"{
+variable "subnet-cidr-useast2"{
     type=list(string)
     description="1-subnet"
 }
 
-variable "subnet-cidr-private-useast1"{
+variable "subnet-cidr-private-useast2"{
     type=list(string)
     description="1-subnet"
 }
