@@ -12,7 +12,9 @@ resource "aws_subnet" "my-subnet-public-useast2"{
     map_public_ip_on_launch=true  
     cidr_block=var.subnet-cidr-useast2[count.index]
     count=length(var.subnet-cidr-useast2)
-      availability_zone = data.aws_availability_zones.available.names[count.index]
+    # availability_zone = data.aws_availability_zones.available.names[count.index]
+      availability_zone = data.aws_availability_zones.available.names[count.index % length(data.aws_availability_zones.available.names)]
+
 }
 
 #   private Subnet
@@ -20,7 +22,9 @@ resource "aws_subnet" "my-subnet-private-useast2"{
     vpc_id=aws_vpc.myvpc.id
     cidr_block=var.subnet-cidr-private-useast2[count.index]
     count=length(var.subnet-cidr-private-useast2)
-      availability_zone = data.aws_availability_zones.available.names[count.index]
+      # availability_zone = data.aws_availability_zones.available.names[count.index]
+     availability_zone = data.aws_availability_zones.available.names[count.index % length(data.aws_availability_zones.available.names)]
+
 }
 
 #Internet-Gateway
