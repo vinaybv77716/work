@@ -12,7 +12,7 @@ resource "aws_subnet" "my-subnet-public-useast2"{
     map_public_ip_on_launch=true  
     cidr_block=var.subnet-cidr-useast2[count.index]
     count=length(var.subnet-cidr-useast2)
-      availability_zone = "us-east-2a"
+      availability_zone = var.availability_zone
 }
 
 #   private Subnet
@@ -20,7 +20,7 @@ resource "aws_subnet" "my-subnet-private-useast2"{
     vpc_id=aws_vpc.myvpc.id
     cidr_block=var.subnet-cidr-private-useast2[count.index]
     count=length(var.subnet-cidr-private-useast2)
-      availability_zone = "us-east-2a"
+      availability_zone = var.availability_zone
 }
 
 #Internet-Gateway
@@ -47,7 +47,7 @@ resource "aws_route_table_association" "rtas-public-useast2" {
 
 # Create a NAT gateway with an Elastic IP for each private subnet to get internet connectivity
 resource "aws_eip" "gw-useast2" {
-  count         = length(var.subnet-cidr-useast2)
+  count         = length(var.availability_zone)
    domain           = "vpc"
 }
 resource "aws_nat_gateway" "gw-east" {
