@@ -12,7 +12,7 @@ resource "aws_subnet" "my-subnet-public-useast2"{
     map_public_ip_on_launch=true  
     cidr_block=var.subnet-cidr-useast2[count.index]
     count=length(var.subnet-cidr-useast2)
-      availability_zone = var.availability_zone
+      availability_zone = data.aws_availability_zones.available.names[count.index]
 }
 
 #   private Subnet
@@ -20,7 +20,7 @@ resource "aws_subnet" "my-subnet-private-useast2"{
     vpc_id=aws_vpc.myvpc.id
     cidr_block=var.subnet-cidr-private-useast2[count.index]
     count=length(var.subnet-cidr-private-useast2)
-      availability_zone = var.availability_zone
+      availability_zone = data.aws_availability_zones.available.names[count.index]
 }
 
 #Internet-Gateway
@@ -47,11 +47,11 @@ resource "aws_route_table_association" "rtas-public-useast2" {
 
 # Create a NAT gateway with an Elastic IP for each private subnet to get internet connectivity
 resource "aws_eip" "gw-useast2" {
-  count         = length(var.availability_zone)
+  count         = length(data.aws_availability_zones.available.names)
    domain           = "vpc"
 }
 resource "aws_nat_gateway" "gw-east" {
-  count         = length(var.subnet-cidr-useast2)
+  count         = length(data.aws_availability_zones.available.names)
   # subnet_id=element(var.subnet-cidr-useast2, count.index)
   subnet_id = aws_subnet.my-subnet-public-useast2[count.index].id
   allocation_id = aws_eip.gw-useast2[count.index].id 
