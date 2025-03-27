@@ -13,7 +13,7 @@ resource "aws_subnet" "my-subnet-public-useast1"{
     provider = aws.useast1
     cidr_block=var.subnet-cidr-useast1[count.index]
     count=length(var.subnet-cidr-useast1)
-      availability_zone = "us-east-1a"
+      availability_zone = "us-east-2a"
 }
 
 #   private Subnet
@@ -21,8 +21,8 @@ resource "aws_subnet" "my-subnet-private-useast1"{
     vpc_id=aws_vpc.myvpc.id
     provider = aws.useast1
     cidr_block=var.subnet-cidr-private-useast1[count.index]
-    # count=length(var.subnet-cidr-private-useast1)
-      availability_zone = "us-east-1a"
+    count=length(var.subnet-cidr-private-useast1)
+      availability_zone = "us-east-2a"
 }
 
 #Internet-Gateway
