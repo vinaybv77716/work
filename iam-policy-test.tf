@@ -1,4 +1,6 @@
-Enter file contents hereresource "aws_iam_role" "opensearchsnapshot" {
+# provider block here
+
+resource "aws_iam_role" "opensearchsnapshot" {
   name               = "opensearchsnapshot-role"
   assume_role_policy = <<EOF
   {
@@ -18,21 +20,18 @@ EOF
 }
 
 resource "aws_iam_policy" "opensearchsnapshot" {
-  name        = "opensearchsnapshot"
-  description = "Policy with specific role ARN as resource"
-  policy      = <<EOF
+  name   = "opensearch-snapshot-policy"
+  policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Action": [
-        "s3:ListAllMyBuckets"
+        "s3:*",
+        "iam:PassRole"
       ],
       "Effect": "Allow",
-      "Resource": [
-        "s3:*", // Replace with your actual role ARN
-        "iam:PassRole"
-      ]
+      "Resource": ":*"
     }
   ]
 }
